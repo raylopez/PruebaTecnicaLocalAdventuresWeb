@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="container-header">
+    <h1 class="title">Bienvenido al generador de facturas</h1>
+    <h2 class="subtitle">Por favor seleccione una companía</h2>
+  </div>
+  @for (company of companies(); track $index) {
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">{{ company.name }}</h2>
+      </div>
+
+      <div class="card-body">
+        <a class="btn btn-primary btn-sm" [routerLink]="['/invoices', company.id]">
+          <fa-icon [icon]="faFileLines" />
+          Generar factura
+        </a>
+      </div>
+    </div>
+  }
+</div>
