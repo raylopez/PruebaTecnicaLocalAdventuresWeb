@@ -1,0 +1,37 @@
+<h2>Facturas</h2>
+
+ <div class="card my-2">
+      <div class="card-body">
+        <ul class="list-unstyled">
+          <li>Empresa: {{ company()?.name }}</li>
+          <li>Telefono: {{ company()?.phone  }}</li>
+          <li>Correo: {{ company()?.email  }}</li>
+        </ul>
+      </div>
+
+    </div>
+
+<table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Cliente</th>
+          <th>Correo</th>
+          <th>Teléfono</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (client of clients(); track client) {
+          @for (invoice of client.invoices; track invoice) {
+            <tr>
+              <td>{{ client.first_name }} {{ client.last_name }}</td>
+              <td>{{ client.email }}</td>
+              <td>{{ client.phone }}</td>
+              <td>
+                <button class="btn btn-success" (click)="downloadInvoice(invoice.id)">Descargar factura</button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>

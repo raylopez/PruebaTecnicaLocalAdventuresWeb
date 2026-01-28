@@ -3,7 +3,7 @@ import { Company } from '../../services/company';
 import { type Company as CompanyModel } from '../../models/company';
 import { RouterLink } from "@angular/router";
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
-import { faCoffee, faFileLines } from '@fortawesome/free-solid-svg-icons';
+import { faFileLines, faUser } from '@fortawesome/free-solid-svg-icons';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -16,6 +16,6 @@ export class Home {
 
   private readonly companyService = inject(Company);
   public companies = toSignal<CompanyModel[]>(this.companyService.getCompanies(), { initialValue: undefined });
-  faCoffee = faCoffee;
+  faUser = faUser;
   faFileLines = faFileLines;
 }

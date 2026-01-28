@@ -1,3 +1,5 @@
+import { Invoice } from "./invoice";
+
 export interface Client {
   id: number;
   first_name: string;
@@ -7,5 +9,6 @@ export interface Client {
   state: string;
   country: string;
   zip_code: string;
-  phone: string
+  phone: string;
+  invoices: Invoice[];
 }

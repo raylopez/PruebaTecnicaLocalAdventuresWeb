@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, OnInit, signal, TemplateRef } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal, TemplateRef, viewChild } from '@angular/core';
 import { Company } from '../../services/company';
 import { Company as CompanyModel } from '../../models/company';
 import { RouterLink } from "@angular/router";
@@ -8,6 +8,7 @@ import { CurrencyPipe, KeyValuePipe } from '@angular/common';
 import { ItemTypePipe } from '../../pipes/item-type-pipe';
 import { NumberPadZeroPipe } from '../../pipes/number-pad-zero-pipe';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal';
+import { Invoice } from '../../services/invoice';
 
 const invoiceFormModel = signal<CreateInvoice>({
   client_id: '',
@@ -20,7 +21,7 @@ const percentagesModel = signal<{ discount: number, tax: number }>({ discount: 0
 
 @Component({
   selector: 'app-invoice-generator',
-  imports: [FormField, KeyValuePipe, ItemTypePipe, NumberPadZeroPipe, CurrencyPipe],
+  imports: [FormField, KeyValuePipe, ItemTypePipe, NumberPadZeroPipe, CurrencyPipe, RouterLink],
   templateUrl: './invoice-generator.html',
   styleUrl: './invoice-generator.css',
 })
@@ -30,10 +31,12 @@ export class InvoiceGenerator implements OnInit {
 
   private modalService = inject(NgbModal);
   private readonly companyService = inject(Company);
+  private readonly invoiceService = inject(Invoice);
 
   public company = signal<CompanyModel|null>(null);
   public itemsSignal = signal<CreateItem[]>([]);
   public itemModelSignal = signal<CreateItem>(createItemInital);
+  public successfullyModal = viewChild.required<TemplateRef<any>>('successfullyContent');
 
   public subtotalSignal = computed(() => {
     return this.itemsSignal().reduce((total, item) => total + item.unit_price * item.quantity, 0)
@@ -101,7 +104,7 @@ export class InvoiceGenerator implements OnInit {
   }
 
   private initializeData() {
-    this.companyService.getCompanyById(this.companyId())
+    this.companyService.getCompanyByIdWithClients(this.companyId())
       .subscribe(comp => this.company.set(comp));
   }
 
@@ -133,7 +136,15 @@ export class InvoiceGenerator implements OnInit {
       items: this.itemsSignal(),
     }
 
-    console.log(body);
+    this.invoiceService.generateInvoice(body)
+      .subscribe({
+        next: (resp) => {
+          this.openModal(this.successfullyModal())
+        },
+        error: (err) => {
+          console.error(err);
+        }
+      });
   }
 
   addItem(modal: NgbModalRef) {

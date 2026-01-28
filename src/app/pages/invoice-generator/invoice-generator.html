@@ -194,3 +194,16 @@
         }
       </div>
 </ng-template>
+
+<!-- succesfully invoice created -->
+<ng-template #successfullyContent let-modal>
+  <div class="modal-body">
+    <p>Factura creada con exitosamente</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" aria-label="Close"
+      (click)="modal.dismiss('close')">Cerrar</button>
+    <button type="button" class="btn btn-primary" aria-label="Close"
+      (click)="modal.dismiss('close')" [routerLink]="['/company', companyId(), 'clients']">Ir a lista de facuras</button>
+  </div>
+</ng-template>

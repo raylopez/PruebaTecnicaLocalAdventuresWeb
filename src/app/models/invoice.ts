@@ -1,4 +1,8 @@
 export interface Invoice {
+  id: number;
+  total: number;
+  due_date: Date;
+  created_at: Date;
 }
 
 export enum ItemType {

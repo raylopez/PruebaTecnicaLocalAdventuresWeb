@@ -8,5 +8,9 @@ export const routes: Routes = [
   {
     path: 'invoices/:companyId',
     loadComponent: () => import('./pages/invoice-generator/invoice-generator').then((c)=>c.InvoiceGenerator)
+  },
+  {
+    path: 'company/:id/clients',
+    loadComponent: () => import('./pages/clients/clients').then(c => c.Clients)
   }
 ];

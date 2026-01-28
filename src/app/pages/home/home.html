@@ -1,7 +1,7 @@
 <div class="container">
   <div class="container-header">
     <h1 class="title">Bienvenido al generador de facturas</h1>
-    <h2 class="subtitle">Por favor seleccione una companía</h2>
+    <h4 class="subtitle">Por favor seleccione una companía</h4>
   </div>
   @for (company of companies(); track $index) {
     <div class="card">
@@ -9,10 +9,14 @@
         <h2 class="card-title">{{ company.name }}</h2>
       </div>
 
-      <div class="card-body">
+      <div class="card-body d-flex gap-2">
         <a class="btn btn-primary btn-sm" [routerLink]="['/invoices', company.id]">
           <fa-icon [icon]="faFileLines" />
           Generar factura
+        </a>
+        <a class="btn btn-primary btn-sm" [routerLink]="['/company', company.id, 'clients']">
+          <fa-icon [icon]="faUser" />
+          Clientes
         </a>
       </div>
     </div>
